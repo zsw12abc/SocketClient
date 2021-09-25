@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderCenterService} from "../shared/Order-Center.service";
 import {Order} from "../shared/order.model";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-order-list',
@@ -9,11 +10,14 @@ import {Order} from "../shared/order.model";
 })
 export class OrderListComponent implements OnInit {
   orders: Order[];
+  socketOrders : Observable<Order[]>;
 
   constructor(private orderCenterService: OrderCenterService) {
   }
 
   ngOnInit(): void {
+    this.socketOrders = this.orderCenterService.socketOrders;
+    console.log(this.socketOrders)
     this.orders = this.orderCenterService.getAllOrders();
     this.orderCenterService.ordersChanged.subscribe(
       (orders: Order[]) => {

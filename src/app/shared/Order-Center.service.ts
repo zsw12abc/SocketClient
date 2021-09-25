@@ -1,10 +1,13 @@
 import {Order} from "./order.model";
-import {EventEmitter} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
+import {Socket} from 'ngx-socket-io'
 
+@Injectable({providedIn: 'root'})
 export class OrderCenterService {
   ordersChanged = new EventEmitter<Order[]>();
   ordersCount: number;
-
+  // currentOrders = this.socket.fromEvent<Order>('order_event');
+  socketOrders = this.socket.fromEvent<Order[]>('order_event');
   private Orders: Order[] = [
     new Order(
       "Test",
@@ -51,13 +54,17 @@ export class OrderCenterService {
       10
     )]
 
+  constructor(private socket: Socket) {
+  }
+
   getAllOrders() {
     this.ordersCount = this.Orders.slice().length;
-    console.log('ordersCount: ' + this.Orders.slice().length)
     return this.Orders.slice().sort((a, b) => a.sent_at_second - b.sent_at_second);
   }
 
   searchOrdersByPrice(price: number) {
+    // console.log('currentOrders:' + this.currentOrders)
+    console.log('socketOrders:' + this.socketOrders)
     if (price == undefined) {
       this.ordersChanged.emit(this.Orders.slice());
       return 0;
