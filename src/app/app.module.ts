@@ -8,6 +8,7 @@ import {OrderListComponent} from './order-list/order-list.component';
 import {OrderCenterService} from "./shared/Order-Center.service";
 import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
 import {FormsModule} from "@angular/forms";
+import {MyFilterPipe} from "./shared/my-filter.pipe";
 
 const config: SocketIoConfig = {url: 'http://localhost:4000', options: {}};
 
@@ -15,7 +16,8 @@ const config: SocketIoConfig = {url: 'http://localhost:4000', options: {}};
   declarations: [
     AppComponent,
     HeaderComponent,
-    OrderListComponent
+    OrderListComponent,
+    MyFilterPipe
   ],
   imports: [
     BrowserModule,

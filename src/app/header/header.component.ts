@@ -15,16 +15,15 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let orders = this.orderCenterService.getAllOrders;
     this.ordersCount = this.orderCenterService.ordersCount;
   }
 
   onSearchOrders() {
-    this.ordersCount = this.orderCenterService.searchOrdersByPrice(this.ordersSearchRef.nativeElement.value === "" ? undefined : this.ordersSearchRef.nativeElement.value);
+    this.orderCenterService.searchOrdersByPrice(this.ordersSearchRef.nativeElement.value === "" ? undefined : this.ordersSearchRef.nativeElement.value);
   }
 
   onSearchingOrders($event: any) {
     this.searchText = $event.target.value;
-    this.ordersCount = this.orderCenterService.searchOrdersByPrice($event.target.value === "" ? undefined : $event.target.value);
+    this.orderCenterService.searchOrdersByPrice($event.target.value === "" ? undefined : $event.target.value);
   }
 }

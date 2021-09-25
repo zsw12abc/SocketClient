@@ -9,21 +9,16 @@ import {Observable} from "rxjs";
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
-  orders: Order[];
-  socketOrders : Observable<Order[]>;
+  socketOrders: Observable<Order[]>;
+  priceFilter: number;
 
   constructor(private orderCenterService: OrderCenterService) {
   }
 
   ngOnInit(): void {
     this.socketOrders = this.orderCenterService.socketOrders;
-    console.log(this.socketOrders)
-    this.orders = this.orderCenterService.getAllOrders();
-    this.orderCenterService.ordersChanged.subscribe(
-      (orders: Order[]) => {
-        this.orders = orders;
-      }
-    )
+    this.orderCenterService.priceFilter.subscribe(price => {
+      this.priceFilter = price
+    })
   }
-
 }
