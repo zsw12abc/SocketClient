@@ -14,16 +14,17 @@ export class OrderCenterService {
 
   searchOrdersByPrice(price: number) {
     this.priceFilter.emit(price);
-
-    // if (price == undefined) {
-    //   this.socketOrdersChanged.emit(this.socketOrders);
-    //   return 0;
-    // } else {
-    //   let filterOrderList: Order[] = this.Orders.slice().filter(
-    //     x => x.price == price).sort((a, b) => a.sent_at_second - b.sent_at_second);
-    //   this.ordersChanged.emit(filterOrderList);
-    //   // this.socketOrdersChanged.emit(filterSocketOrderList)
-    //   return this.ordersCount = filterOrderList.length;
-    // }
+    let count = 0;
+    if (price == undefined) {
+      this.ordersCount = 0;
+    }
+    this.socketOrders.subscribe(orders => {
+      for (let order of orders) {
+        if (order.price.toString().indexOf(price.toString()) !== -1) {
+          count++;
+        }
+      }
+      this.ordersCount = count;
+    })
   }
 }

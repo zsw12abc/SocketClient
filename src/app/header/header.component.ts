@@ -20,10 +20,12 @@ export class HeaderComponent implements OnInit {
 
   onSearchOrders() {
     this.orderCenterService.searchOrdersByPrice(this.ordersSearchRef.nativeElement.value === "" ? undefined : this.ordersSearchRef.nativeElement.value);
+    this.ordersCount = this.orderCenterService.ordersCount;
   }
 
   onSearchingOrders($event: any) {
     this.searchText = $event.target.value;
     this.orderCenterService.searchOrdersByPrice($event.target.value === "" ? undefined : $event.target.value);
+    this.ordersCount = this.orderCenterService.ordersCount;
   }
 }
