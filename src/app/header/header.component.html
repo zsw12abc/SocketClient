@@ -1,0 +1,10 @@
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand">Socket Client</a>
+    <span class="navbar-text" *ngIf="(ordersCount != undefined) && (searchText.length != 0)">{{ordersCount}} Order(s) Found</span>
+    <form class="d-flex">
+      <input class="form-control me-2" type="text" placeholder="Search" (input)="onSearchingOrders($event)" #SearchOrders>
+      <button class="btn btn-outline-success" type="button" (click)="onSearchOrders()">Search</button>
+    </form>
+  </div>
+</nav>
