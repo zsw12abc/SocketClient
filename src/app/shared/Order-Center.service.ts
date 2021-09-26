@@ -5,26 +5,28 @@ import {Observable} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class OrderCenterService {
-  ordersCount: number;
+  ordersCount = new EventEmitter<number>();
   socketOrders = this.socket.fromEvent<Order[]>('order_event');
   priceFilter = new EventEmitter<number>();
 
   constructor(private socket: Socket) {
   }
 
-  searchOrdersByPrice(price: number) {
+  async searchOrdersByPrice(price: number) {
     this.priceFilter.emit(price);
     let count = 0;
-    if (price == undefined) {
-      this.ordersCount = 0;
-    }
-    this.socketOrders.subscribe(orders => {
-      for (let order of orders) {
-        if (order.price.toString().indexOf(price.toString()) !== -1) {
-          count++;
+    if (price === undefined || price == null) {
+      this.ordersCount.emit(0);
+    } else {
+      await this.socketOrders.forEach(orders => {
+        for (let order of orders) {
+          if (order.price.toString().indexOf(price.toString()) !== -1) {
+            count++;
+          }
         }
-      }
-      this.ordersCount = count;
-    })
+        this.ordersCount.emit(count);
+      })
+    }
+    this.ordersCount.emit(0);
   }
 }

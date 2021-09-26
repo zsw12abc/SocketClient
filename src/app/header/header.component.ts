@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {OrderCenterService} from "../shared/Order-Center.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-header',
@@ -15,17 +16,20 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ordersCount = this.orderCenterService.ordersCount;
   }
 
-  onSearchOrders() {
-    this.orderCenterService.searchOrdersByPrice(this.ordersSearchRef.nativeElement.value === "" ? undefined : this.ordersSearchRef.nativeElement.value);
-    this.ordersCount = this.orderCenterService.ordersCount;
+  async onSearchOrders() {
+    await this.orderCenterService.searchOrdersByPrice(this.ordersSearchRef.nativeElement.value === "" ? undefined : this.ordersSearchRef.nativeElement.value);
+    console.log('ordersCount', this.ordersCount)
   }
 
-  onSearchingOrders($event: any) {
+  async onSearchingOrders($event: any) {
     this.searchText = $event.target.value;
-    this.orderCenterService.searchOrdersByPrice($event.target.value === "" ? undefined : $event.target.value);
-    this.ordersCount = this.orderCenterService.ordersCount;
+    this.orderCenterService.ordersCount.subscribe((ordersCount) => {
+      this.ordersCount = ordersCount;
+    })
+    await this.orderCenterService.searchOrdersByPrice($event.target.value === "" ? undefined : $event.target.value);
+    console.log('ordersCount', this.ordersCount)
   }
+
 }
